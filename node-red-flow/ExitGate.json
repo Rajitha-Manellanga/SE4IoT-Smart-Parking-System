@@ -1,0 +1,518 @@
+[
+    {
+        "id": "9fec952f62b2287c",
+        "type": "tab",
+        "label": "Exit Gate",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f51b6f83bc14c1f5",
+        "type": "mysql",
+        "z": "9fec952f62b2287c",
+        "mydb": "44479277321f9a71",
+        "name": "Get Booking Data",
+        "x": 470,
+        "y": 620,
+        "wires": [
+            [
+                "8eaafbf0601c8192",
+                "e10b924eb433799d"
+            ]
+        ]
+    },
+    {
+        "id": "5868afa1a0430c97",
+        "type": "debug",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "8bc6a006feeb2a24",
+        "type": "inject",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 80,
+        "y": 280,
+        "wires": [
+            [
+                "4fbf7a7059bd6f54"
+            ]
+        ]
+    },
+    {
+        "id": "3e51d7f6d5cf9edb",
+        "type": "openalpr-cloud",
+        "z": "9fec952f62b2287c",
+        "country": [
+            "eu"
+        ],
+        "secretKey": "sk_eaa1e2b23c14328a1b583422",
+        "limit": "0",
+        "recognizeVehicle": false,
+        "skipEmpty": true,
+        "passImage": false,
+        "name": "Car Plate Recognizer",
+        "x": 280,
+        "y": 480,
+        "wires": [
+            [
+                "30a353aafec52efa"
+            ]
+        ]
+    },
+    {
+        "id": "4fbf7a7059bd6f54",
+        "type": "file in",
+        "z": "9fec952f62b2287c",
+        "name": "Input Cars",
+        "filename": "/tmp/car2.jpeg",
+        "format": "stream",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "allProps": true,
+        "x": 170,
+        "y": 360,
+        "wires": [
+            [
+                "faded032f1343cf1"
+            ]
+        ]
+    },
+    {
+        "id": "faded032f1343cf1",
+        "type": "base64",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 300,
+        "y": 400,
+        "wires": [
+            [
+                "3e51d7f6d5cf9edb"
+            ]
+        ]
+    },
+    {
+        "id": "30a353aafec52efa",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "Get BookingId",
+        "func": "var numberPlate = msg.payload.vehicles[0].plate[0].plate;\ncontext.set('numberPlate', numberPlate);\nflow.set('numberPlate', numberPlate);\nvar query = \"Select B.BookingId, B.ParkingSlot from Bookings B INNER JOIN Vehicles V ON B.UserId = V.UserId Where V.LicensePlate='\" + numberPlate + \"'\";\nmsg = {'topic':query};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 560,
+        "wires": [
+            [
+                "f51b6f83bc14c1f5"
+            ]
+        ]
+    },
+    {
+        "id": "8eaafbf0601c8192",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "query payment status",
+        "func": "var bookingId = msg.payload[0]['BookingId']\nvar parkingSlot = msg.payload[0]['ParkingSlot'];\nflow.set('parkingSlot', parkingSlot)\nvar query = \"Select Count(*) AS Count from Payments Where BookingId='\" + bookingId + \"' AND PaidStatus=1\";\nmsg = {'topic':query};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 700,
+        "wires": [
+            [
+                "40239fe0fba9edef"
+            ]
+        ]
+    },
+    {
+        "id": "bcf6334aefd13caa",
+        "type": "switch",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 750,
+        "y": 1000,
+        "wires": [
+            [
+                "751f1f3b42b56ff3"
+            ],
+            [
+                "2dc521a935ca336a"
+            ]
+        ]
+    },
+    {
+        "id": "e739990c66d35003",
+        "type": "mqtt in",
+        "z": "9fec952f62b2287c",
+        "name": "Gate Open",
+        "topic": "/actuator/gate/exit",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "e157bdfbee11adb2",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 1220,
+        "wires": [
+            [
+                "c82095023bf5b71c"
+            ]
+        ]
+    },
+    {
+        "id": "b32c5428d11339d7",
+        "type": "debug",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 1540,
+        "wires": []
+    },
+    {
+        "id": "74b13bf14ccfec5a",
+        "type": "influxdb out",
+        "z": "9fec952f62b2287c",
+        "influxdb": "06453e8616cf59b9",
+        "name": "Record Incoming Vehicle",
+        "measurement": "exitcarcount",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 570,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "40239fe0fba9edef",
+        "type": "mysql",
+        "z": "9fec952f62b2287c",
+        "mydb": "44479277321f9a71",
+        "name": "get payment status",
+        "x": 620,
+        "y": 800,
+        "wires": [
+            [
+                "a4dd14dbedb5ed8e"
+            ]
+        ]
+    },
+    {
+        "id": "a4dd14dbedb5ed8e",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "confirm payment",
+        "func": "var dataPresenceCheck = msg.payload[0]['Count'];\n\n//var query = \"Select COUNT(*) from Bookings B INNER JOIN Vehicles V ON B.UserId = V.UserId Where V.LicensePlate='\" + numberPlate + \"'\";\nmsg = {'payload':dataPresenceCheck};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 900,
+        "wires": [
+            [
+                "bcf6334aefd13caa"
+            ]
+        ]
+    },
+    {
+        "id": "c82095023bf5b71c",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "Parking Status query",
+        "func": "var parkingSlotName = flow.get('parkingSlot');\nvar query = \"UPDATE ParkingSlots SET ParkingStatus=0 WHERE ParkingSlotName=\" + parkingSlotName ;\nvar exitCount = 1;\nif(flow.get('exitCount')){\n    exitCount += parseInt(flow.get('exitCount'));   \n}\nflow.set('exitCount', exitCount)\nmsg = {'topic':query,payload:exitCount};\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 1280,
+        "wires": [
+            [
+                "b550135898bfd3f0",
+                "74b13bf14ccfec5a",
+                "2878cec30cd6f0f9"
+            ]
+        ]
+    },
+    {
+        "id": "751f1f3b42b56ff3",
+        "type": "mqtt out",
+        "z": "9fec952f62b2287c",
+        "name": "Gate Broker",
+        "topic": "/actuator/gate/exit",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e157bdfbee11adb2",
+        "x": 970,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "b550135898bfd3f0",
+        "type": "mysql",
+        "z": "9fec952f62b2287c",
+        "mydb": "44479277321f9a71",
+        "name": "Update Parking Status",
+        "x": 320,
+        "y": 1360,
+        "wires": [
+            [
+                "bb7068d5a97b0f90"
+            ]
+        ]
+    },
+    {
+        "id": "bb7068d5a97b0f90",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "parse result",
+        "func": "var result = JSON.stringify(msg.payload);\nmsg = {'payload': result}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 1440,
+        "wires": [
+            [
+                "b32c5428d11339d7"
+            ]
+        ]
+    },
+    {
+        "id": "dffb5b886e0487a2",
+        "type": "comment",
+        "z": "9fec952f62b2287c",
+        "name": "The following is the simualation of the system in exit gate.",
+        "info": "The following is the simualation of the system in exit gate.",
+        "x": 260,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "7958c8fbd11ffe4e",
+        "type": "comment",
+        "z": "9fec952f62b2287c",
+        "name": "It is simulation of actuator in exit gate.",
+        "info": "",
+        "x": 260,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "2dc521a935ca336a",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "message for no payment status",
+        "func": "msg = {\"payload\": \"Please pay the parking charge before leaving.\"}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 1060,
+        "wires": [
+            [
+                "5868afa1a0430c97"
+            ]
+        ]
+    },
+    {
+        "id": "e10b924eb433799d",
+        "type": "debug",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "2878cec30cd6f0f9",
+        "type": "debug",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "3e009a443de0d805",
+        "type": "inject",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 1860,
+        "wires": [
+            [
+                "5ed2d1d4885e4ce3"
+            ]
+        ]
+    },
+    {
+        "id": "5ed2d1d4885e4ce3",
+        "type": "function",
+        "z": "9fec952f62b2287c",
+        "name": "",
+        "func": "flow.set('exitCount', 0)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 1860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "44479277321f9a71",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "172.17.0.7",
+        "port": "3306",
+        "db": "SmartParking",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "e157bdfbee11adb2",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "172.17.0.3",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "06453e8616cf59b9",
+        "type": "influxdb",
+        "hostname": "172.17.0.6",
+        "port": "8086",
+        "protocol": "http",
+        "database": "parking_slot",
+        "name": "Record Incoming Vechicles",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    }
+]

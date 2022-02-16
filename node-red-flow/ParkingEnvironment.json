@@ -1,0 +1,1595 @@
+[
+    {
+        "id": "e5fad43430413d82",
+        "type": "tab",
+        "label": "Parking Environment",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c0aa10b4013db312",
+        "type": "file in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "filename": "/tmp/testcase.csv",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 390,
+        "y": 200,
+        "wires": [
+            [
+                "648aaa169af2a48f"
+            ]
+        ]
+    },
+    {
+        "id": "4a23f2d4ac0f919a",
+        "type": "inject",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 140,
+        "wires": [
+            [
+                "c0aa10b4013db312"
+            ]
+        ],
+        "icon": "font-awesome/fa-paper-plane-o"
+    },
+    {
+        "id": "648aaa169af2a48f",
+        "type": "csv",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "Time,Reading ID,Humidity,Temperature,MQ139,TVOC,eCO2,Detector,Status",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 590,
+        "y": 200,
+        "wires": [
+            [
+                "88da8235fafd370c",
+                "b656794ca1f98d6e",
+                "3193512bc044f82b",
+                "e3382c39f65dbc81",
+                "477eda905ad254c4"
+            ]
+        ]
+    },
+    {
+        "id": "3897e5cfbb8a4c49",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/FHGas",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1220,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ba706e0d796daa21",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/Temperature",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 660,
+        "wires": [
+            [
+                "e27d77f48feca9c5",
+                "82f288f1974de96f"
+            ]
+        ]
+    },
+    {
+        "id": "9222a994f38fd350",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/Temperature",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1240,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "0dd8087899615316",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/Humidity",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1220,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2bd8054190fc08cd",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/TVOC",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1220,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "29ea265133bdd28c",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/eCO2",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1210,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "88da8235fafd370c",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Filter Humidity",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.Humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 800,
+        "y": 80,
+        "wires": [
+            [
+                "ec95b558c8f04fac"
+            ]
+        ]
+    },
+    {
+        "id": "891ab444d521619d",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "One every second",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": true,
+        "outputs": 1,
+        "x": 1010,
+        "y": 140,
+        "wires": [
+            [
+                "9222a994f38fd350"
+            ]
+        ]
+    },
+    {
+        "id": "4241d8ddfb51f41f",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/FHGas",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 780,
+        "wires": [
+            [
+                "4a30d6051bc04f99",
+                "34feb4f67485a210"
+            ]
+        ]
+    },
+    {
+        "id": "b1bc9ff89af7fb8d",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/eCO2",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 1020,
+        "wires": [
+            [
+                "8016963ef79f7ff8",
+                "d0d045dddc9d1e29"
+            ]
+        ]
+    },
+    {
+        "id": "2d88efadb2294bd2",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/TVOC",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 900,
+        "wires": [
+            [
+                "03afd278888b3ca7",
+                "5e77359c9c94c8a6"
+            ]
+        ]
+    },
+    {
+        "id": "4aa67b4f227fa8fd",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "sensor/Humidity",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 540,
+        "wires": [
+            [
+                "6a3c843709ba36b0",
+                "3660f5b55b1ad487"
+            ]
+        ]
+    },
+    {
+        "id": "e7d94500af8a81c3",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "One every second",
+        "pauseType": "rate",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 320,
+        "wires": [
+            [
+                "29ea265133bdd28c"
+            ]
+        ]
+    },
+    {
+        "id": "e27d77f48feca9c5",
+        "type": "switch",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "26",
+                "vt": "num",
+                "v2": "33",
+                "v2t": "num"
+            },
+            {
+                "t": "gt",
+                "v": "33",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 590,
+        "y": 660,
+        "wires": [
+            [
+                "a2e678a0d6e60ce8"
+            ],
+            [
+                "58ccdf7c0378b646",
+                "4dddb0dccfee3c9d",
+                "cec39aa6bde323c1",
+                "41e38d0f3b585a62",
+                "349f62d3e8d90d68"
+            ],
+            [
+                "a98a1d226f4aeeae",
+                "8cb41fe1b95b5f8d",
+                "daa747040273f960"
+            ]
+        ]
+    },
+    {
+        "id": "4a30d6051bc04f99",
+        "type": "switch",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "134",
+                "vt": "num",
+                "v2": "144",
+                "v2t": "num"
+            },
+            {
+                "t": "gt",
+                "v": "144",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 590,
+        "y": 780,
+        "wires": [
+            [
+                "a2e678a0d6e60ce8"
+            ],
+            [
+                "58ccdf7c0378b646",
+                "4dddb0dccfee3c9d",
+                "cec39aa6bde323c1",
+                "41e38d0f3b585a62",
+                "349f62d3e8d90d68"
+            ],
+            [
+                "a98a1d226f4aeeae",
+                "8cb41fe1b95b5f8d",
+                "daa747040273f960"
+            ]
+        ]
+    },
+    {
+        "id": "03afd278888b3ca7",
+        "type": "switch",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "400",
+                "vt": "num",
+                "v2": "600",
+                "v2t": "num"
+            },
+            {
+                "t": "gt",
+                "v": "600",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 590,
+        "y": 900,
+        "wires": [
+            [
+                "a2e678a0d6e60ce8"
+            ],
+            [
+                "58ccdf7c0378b646",
+                "4dddb0dccfee3c9d",
+                "cec39aa6bde323c1",
+                "41e38d0f3b585a62",
+                "349f62d3e8d90d68"
+            ],
+            [
+                "a98a1d226f4aeeae",
+                "8cb41fe1b95b5f8d",
+                "daa747040273f960"
+            ]
+        ]
+    },
+    {
+        "id": "8016963ef79f7ff8",
+        "type": "switch",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "900",
+                "vt": "num",
+                "v2": "1200",
+                "v2t": "num"
+            },
+            {
+                "t": "gt",
+                "v": "1200",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 590,
+        "y": 1020,
+        "wires": [
+            [
+                "a2e678a0d6e60ce8"
+            ],
+            [
+                "58ccdf7c0378b646",
+                "4dddb0dccfee3c9d",
+                "cec39aa6bde323c1",
+                "41e38d0f3b585a62",
+                "349f62d3e8d90d68"
+            ],
+            [
+                "a98a1d226f4aeeae",
+                "8cb41fe1b95b5f8d",
+                "daa747040273f960"
+            ]
+        ]
+    },
+    {
+        "id": "9953d63b.3ddff8",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "Email",
+        "func": "\nmsg={\n    payload:msg.payload,\n    topic:\"Fire Alert! Parking lot in Shopping Complex ABC on Fire\",\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 620,
+        "wires": [
+            [
+                "3aed55f1a953c202"
+            ]
+        ],
+        "icon": "font-awesome/fa-envelope-o"
+    },
+    {
+        "id": "b6a21363.fed41",
+        "type": "template",
+        "z": "e5fad43430413d82",
+        "name": "html",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<head>\n    <style>\n        {{payload}}\n    </style>\n</head>\n\n\n<body>\n    <p><B>This is a real Fire Alert, DON'T IGNORE</B></p>\n    <p>There is fire in the parking lot</p>\n    <p><B>Address: Kauppakatu 31, 53100 Lappeenranta</B></p>\n    <hr><p>Thank you,</p>\n    <p>ManagmentTeam</p>\n </body>",
+        "x": 1070,
+        "y": 620,
+        "wires": [
+            [
+                "9953d63b.3ddff8"
+            ]
+        ],
+        "icon": "node-red/parser-xml.svg"
+    },
+    {
+        "id": "ec95b558c8f04fac",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "One every second",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": true,
+        "outputs": 1,
+        "x": 1010,
+        "y": 80,
+        "wires": [
+            [
+                "0dd8087899615316"
+            ]
+        ]
+    },
+    {
+        "id": "6a3c843709ba36b0",
+        "type": "switch",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "45",
+                "vt": "num",
+                "v2": "51",
+                "v2t": "num"
+            },
+            {
+                "t": "gt",
+                "v": "51",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 590,
+        "y": 540,
+        "wires": [
+            [
+                "a2e678a0d6e60ce8"
+            ],
+            [
+                "58ccdf7c0378b646",
+                "4dddb0dccfee3c9d",
+                "cec39aa6bde323c1",
+                "41e38d0f3b585a62",
+                "349f62d3e8d90d68"
+            ],
+            [
+                "a98a1d226f4aeeae",
+                "8cb41fe1b95b5f8d",
+                "daa747040273f960"
+            ]
+        ]
+    },
+    {
+        "id": "ead9b375a4d2bdea",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "One every second",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": true,
+        "outputs": 1,
+        "x": 1010,
+        "y": 200,
+        "wires": [
+            [
+                "3897e5cfbb8a4c49"
+            ]
+        ]
+    },
+    {
+        "id": "a00399bc7333473c",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "One every second",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": true,
+        "outputs": 1,
+        "x": 1010,
+        "y": 260,
+        "wires": [
+            [
+                "2bd8054190fc08cd"
+            ]
+        ]
+    },
+    {
+        "id": "b656794ca1f98d6e",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Filter Temperature",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.Temperature",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 810,
+        "y": 140,
+        "wires": [
+            [
+                "891ab444d521619d"
+            ]
+        ]
+    },
+    {
+        "id": "3193512bc044f82b",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Filter FHGas",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.MQ139",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 790,
+        "y": 200,
+        "wires": [
+            [
+                "ead9b375a4d2bdea"
+            ]
+        ]
+    },
+    {
+        "id": "e3382c39f65dbc81",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Filter TVOC",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.TVOC",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 790,
+        "y": 260,
+        "wires": [
+            [
+                "a00399bc7333473c"
+            ]
+        ]
+    },
+    {
+        "id": "477eda905ad254c4",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Filter eCO2",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.eCO2",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 790,
+        "y": 320,
+        "wires": [
+            [
+                "e7d94500af8a81c3"
+            ]
+        ]
+    },
+    {
+        "id": "58ccdf7c0378b646",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "Don't spam",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 930,
+        "y": 620,
+        "wires": [
+            [
+                "b6a21363.fed41"
+            ]
+        ]
+    },
+    {
+        "id": "f9a5d80947a2e9b6",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "/actuator/emergencyLighting",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1320,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "9a0e1aa632e847ae",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "/actuator/ventilation",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1290,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "e6c99e2f9d91f639",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "/actuator/emergencyLighting",
+        "qos": "2",
+        "datatype": "utf8",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 320,
+        "y": 1260,
+        "wires": [
+            [
+                "59fe9881dd3a588c"
+            ]
+        ]
+    },
+    {
+        "id": "8b1d4c414eaf77cc",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "/actuator/ventilation",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 290,
+        "y": 1300,
+        "wires": [
+            [
+                "4388d5db2547eb4c"
+            ]
+        ]
+    },
+    {
+        "id": "4dddb0dccfee3c9d",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Open emergency lighting",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is fire, emergency lighting: ON",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 990,
+        "y": 720,
+        "wires": [
+            [
+                "f9a5d80947a2e9b6"
+            ]
+        ],
+        "icon": "node-red-contrib-actionflows/actionflows.png"
+    },
+    {
+        "id": "cec39aa6bde323c1",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Close central ventilation system",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is fire, central ventilation system: OFF",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1010,
+        "y": 860,
+        "wires": [
+            [
+                "9a0e1aa632e847ae"
+            ]
+        ],
+        "icon": "font-awesome/fa-snowflake-o"
+    },
+    {
+        "id": "a98a1d226f4aeeae",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Close emergency lighting",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is no fire, emergency lighting: OFF",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 990,
+        "y": 760,
+        "wires": [
+            [
+                "f9a5d80947a2e9b6"
+            ]
+        ],
+        "icon": "node-red-contrib-actionflows/actionflows-locked.png"
+    },
+    {
+        "id": "1cbc23f971a81e4b",
+        "type": "debug",
+        "z": "e5fad43430413d82",
+        "name": "Lightning",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "2c3431c8e43c9c4b",
+        "type": "debug",
+        "z": "e5fad43430413d82",
+        "name": "Ventilation",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "8cb41fe1b95b5f8d",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Open central ventilation system",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is no fire, central ventilation system: ON",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1010,
+        "y": 900,
+        "wires": [
+            [
+                "9a0e1aa632e847ae"
+            ]
+        ],
+        "icon": "font-awesome/fa-fire"
+    },
+    {
+        "id": "59fe9881dd3a588c",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "Don't spam",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "30",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 570,
+        "y": 1260,
+        "wires": [
+            [
+                "1cbc23f971a81e4b"
+            ]
+        ]
+    },
+    {
+        "id": "4388d5db2547eb4c",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "Don't spam",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "30",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 570,
+        "y": 1300,
+        "wires": [
+            [
+                "2c3431c8e43c9c4b"
+            ]
+        ]
+    },
+    {
+        "id": "9543d4e959bc0f1f",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "Email",
+        "func": "\nmsg={\n    payload:msg.payload,\n    topic:\"Abnormal data readings from the sensors in the parking lot\",\n};\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 540,
+        "wires": [
+            [
+                "0d885ce295599d80"
+            ]
+        ],
+        "icon": "font-awesome/fa-envelope-o"
+    },
+    {
+        "id": "c0143467ea1495d7",
+        "type": "template",
+        "z": "e5fad43430413d82",
+        "name": "html",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<head>\n    <style>\n        {{payload}}\n    </style>\n</head>\n\n\n<body>\n    <p><B>Please, go check the parking lot for abnormal behaviour.</B></p>\n   \n    <hr><p>Thank you,</p>\n    <p>ManagmentTeam</p>\n </body>",
+        "x": 1070,
+        "y": 540,
+        "wires": [
+            [
+                "9543d4e959bc0f1f"
+            ]
+        ],
+        "icon": "node-red/parser-xml.svg"
+    },
+    {
+        "id": "a2e678a0d6e60ce8",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "Don't spam",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 930,
+        "y": 540,
+        "wires": [
+            [
+                "c0143467ea1495d7"
+            ]
+        ]
+    },
+    {
+        "id": "6317c6103d5a7ccd",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "Trigger alarm in emergency",
+        "topic": "/actuator/alarm",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0d11735f9c1562f1",
+        "x": 1200,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "41e38d0f3b585a62",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Open Alarm",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is fire, alarm: ON",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 950,
+        "y": 980,
+        "wires": [
+            [
+                "6317c6103d5a7ccd"
+            ]
+        ],
+        "icon": "node-red/alert.svg"
+    },
+    {
+        "id": "daa747040273f960",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Close Alarm",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is no fire, alarm: OFF",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 950,
+        "y": 1020,
+        "wires": [
+            [
+                "6317c6103d5a7ccd"
+            ]
+        ],
+        "icon": "node-red/alert.svg"
+    },
+    {
+        "id": "08aabf08e26f6d8f",
+        "type": "mqtt in",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "topic": "/actuator/alarm",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "0d11735f9c1562f1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 280,
+        "y": 1340,
+        "wires": [
+            [
+                "a346cefa7a5b1ff4"
+            ]
+        ]
+    },
+    {
+        "id": "e697dc3afbd0883d",
+        "type": "debug",
+        "z": "e5fad43430413d82",
+        "name": "Alarm",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "a346cefa7a5b1ff4",
+        "type": "delay",
+        "z": "e5fad43430413d82",
+        "name": "Don't spam",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "30",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 570,
+        "y": 1340,
+        "wires": [
+            [
+                "e697dc3afbd0883d"
+            ]
+        ]
+    },
+    {
+        "id": "3aed55f1a953c202",
+        "type": "e-mail",
+        "z": "e5fad43430413d82",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "hesham.199994@gmail.com",
+        "dname": "Contact the Fire department",
+        "x": 1440,
+        "y": 620,
+        "wires": [],
+        "icon": "font-awesome/fa-at"
+    },
+    {
+        "id": "0d885ce295599d80",
+        "type": "e-mail",
+        "z": "e5fad43430413d82",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "hesham.199994@gmail.com",
+        "dname": "Send an abnormality notification to security team",
+        "x": 1500,
+        "y": 540,
+        "wires": [],
+        "icon": "font-awesome/fa-at"
+    },
+    {
+        "id": "f26ea38a45863c47",
+        "type": "influxdb out",
+        "z": "e5fad43430413d82",
+        "influxdb": "d6c20b34041e47f0",
+        "name": "Safety Metrices",
+        "measurement": "safetymetrices",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "parking_slot",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 600,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "3660f5b55b1ad487",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "func": "msg.payload = {sensor:'humidity',value: parseInt(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 440,
+        "wires": [
+            [
+                "f26ea38a45863c47"
+            ]
+        ]
+    },
+    {
+        "id": "82f288f1974de96f",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "func": "msg.payload = {sensor:'temperature',value: parseInt(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 600,
+        "wires": [
+            [
+                "f26ea38a45863c47"
+            ]
+        ]
+    },
+    {
+        "id": "34feb4f67485a210",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "func": "msg.payload = {sensor:'fhgas',value: parseInt(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 720,
+        "wires": [
+            [
+                "f26ea38a45863c47"
+            ]
+        ]
+    },
+    {
+        "id": "5e77359c9c94c8a6",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "func": "msg.payload = {sensor:'tvoc',value: parseInt(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 840,
+        "wires": [
+            [
+                "f26ea38a45863c47"
+            ]
+        ]
+    },
+    {
+        "id": "d0d045dddc9d1e29",
+        "type": "function",
+        "z": "e5fad43430413d82",
+        "name": "",
+        "func": "msg.payload = {sensor:'eco2',value: parseInt(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 960,
+        "wires": [
+            [
+                "f26ea38a45863c47"
+            ]
+        ]
+    },
+    {
+        "id": "349f62d3e8d90d68",
+        "type": "change",
+        "z": "e5fad43430413d82",
+        "name": "Open Gate",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "payload",
+                "fromt": "msg",
+                "to": "There is fire, open gates: ON",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 950,
+        "y": 1080,
+        "wires": [
+            [
+                "ddc31861f6d6c486"
+            ]
+        ],
+        "icon": "node-red-contrib-actionflows/actionflows.png"
+    },
+    {
+        "id": "ddc31861f6d6c486",
+        "type": "mqtt out",
+        "z": "e5fad43430413d82",
+        "name": "Emergency gate open",
+        "topic": "/actuator/gate/#",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 1210,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "0d11735f9c1562f1",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "172.17.0.3",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d6c20b34041e47f0",
+        "type": "influxdb",
+        "hostname": "172.17.0.6",
+        "port": "8086",
+        "protocol": "http",
+        "database": "example",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.8-flux",
+        "url": "http://172.17.0.6:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "d65284f9b1200cb0",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "172.17.0.3",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]

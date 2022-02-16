@@ -1,0 +1,1338 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Parking Availability",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "8b1208c38ce2f54f",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 1",
+        "topic": "sensors/utsonic/utschk1",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 420,
+        "wires": [
+            [
+                "9792df3bdd5bce1b"
+            ]
+        ]
+    },
+    {
+        "id": "3711433865bba13e",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 1",
+        "topic": "sensors/utsonic/utschk1",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 380,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2d9ec28b18f60af5",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 1 STATUS",
+        "func": "// spart = msg.topic.split(\"/\")[2]\n// slot = \" \"\n// var previous = flow.get(\"previous\");\n// var current = msg.payload;\n// var slot = \" \";\n// var value = \" \";\n\n// if(spart == \"utschk1\")\n//     slot = \"SLOT 1\"\n// if(spart == \"utschk2\")\n//     slot = \"SLOT 2\"\n// if(spart == \"utschk3\")\n//     slot = \"SLOT 3\"\n// if(spart == \"utschk4\")\n//     slot = \"SLOT 4\"\n    \n// if(current != previous){\n//     if(current >=10 && current <=50){\n//         slot = slot;\n//         value = \"OCCUPIED\";\n//     }else if(current > 50){\n//         slot = slot;\n//         value = \"OCCUPIED\";\n//     //msg.payload = {value:\"AVAILABLE\",slot:slot}\n//     }else{\n//         slot = slot;\n//         value = \"ERROR\";\n//     }\n//     msg.payload = {slot:slot,value:value}\n \n// }else{\n\n//     msg.payload = current+\"_\"+previous;\n// }\n\n// flow.set(\"previous\",current);\n\n// return msg;\n\nvar previous = flow.get(\"previous1\");\nvar current = msg.payload;\nvar previous_val = \"\";\nvar current_val = \"\";\n\n\nif(previous >=10 && previous <=50){\n    previous_val = \"OCCUPIED\";\n}else if(previous > 50){\n    previous_val = \"AVAILABLE\";\n}else{\n    previous_val = \"ERROR\";\n}\n\nif(current >=10 && current <=50){\n    current_val = \"OCCUPIED\";\n}else if(current > 50){\n    current_val = \"AVAILABLE\";\n}else{\n    current_val = \"ERROR\";\n}\n\nif(previous_val != current_val){\n    msg.payload = {slot: \"SLOT 1\",value:current_val}\n}else{\n    msg.payload = {slot: \"SLOT 1\",value:\"IGNORED\"}\n}\n\n\nflow.set(\"previous1\",current);\n\nreturn msg;\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\n",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 400,
+        "wires": [
+            [
+                "c7079542949c6f56",
+                "d8c46074c0a1da7d"
+            ]
+        ]
+    },
+    {
+        "id": "bdba2e7bbe02a121",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 1 CHECK",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT1-CHK",
+        "payload": "43",
+        "payloadType": "num",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "3711433865bba13e"
+            ]
+        ]
+    },
+    {
+        "id": "c7079542949c6f56",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "d6c20b34041e47f0",
+        "name": "Parking Status",
+        "measurement": "availability",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "parking_slot",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1240,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "1d2a47fcd30d2f7b",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 2",
+        "topic": "sensors/utsonic/utschk2",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 560,
+        "wires": [
+            [
+                "e79dd90f3f4e37d5"
+            ]
+        ]
+    },
+    {
+        "id": "fe7a351201bb4c88",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 3",
+        "topic": "sensors/utsonic/utschk3",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 700,
+        "wires": [
+            [
+                "837cd83d24f6a840"
+            ]
+        ]
+    },
+    {
+        "id": "6eca2f3bb4e1ca49",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 4",
+        "topic": "sensors/utsonic/utschk4",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 900,
+        "wires": [
+            [
+                "e8a6bf729976f832"
+            ]
+        ]
+    },
+    {
+        "id": "9792df3bdd5bce1b",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "previous1",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 470,
+        "y": 420,
+        "wires": [
+            [
+                "2d9ec28b18f60af5"
+            ]
+        ]
+    },
+    {
+        "id": "e79dd90f3f4e37d5",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "previous2",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 470,
+        "y": 560,
+        "wires": [
+            [
+                "78c1ebd35bd44443"
+            ]
+        ]
+    },
+    {
+        "id": "78c1ebd35bd44443",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 2 STATUS",
+        "func": "// spart = msg.topic.split(\"/\")[2]\n// slot = \" \"\n// if(spart == \"utschk1\")\n//     slot = \"SLOT 1\"\n// if(spart == \"utschk2\")\n//     slot = \"SLOT 2\"\n// if(spart == \"utschk3\")\n//     slot = \"SLOT 3\"\n// if(spart == \"utschk4\")\n//     slot = \"SLOT 4\"\n    \nvar previous = flow.get(\"previous2\");\nvar current = msg.payload;\nvar previous_val = \"\";\nvar current_val = \"\";\n\n\nif(previous >=10 && previous <=50){\n    previous_val = \"OCCUPIED\";\n}else if(previous > 50){\n    previous_val = \"AVAILABLE\";\n}else{\n    previous_val = \"ERROR\";\n}\n\nif(current >=10 && current <=50){\n    current_val = \"OCCUPIED\";\n}else if(current > 50){\n    current_val = \"AVAILABLE\";\n}else{\n    current_val = \"ERROR\";\n}\n\nif(previous_val != current_val){\n    msg.payload = {slot: \"SLOT 2\",value:current_val}\n}else{\n    msg.payload = {slot: \"SLOT 2\",value:\"IGNORED\"}\n}\n\n\nflow.set(\"previous2\",current);\n\nreturn msg;\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\n",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 560,
+        "wires": [
+            [
+                "c7079542949c6f56",
+                "d8c46074c0a1da7d"
+            ]
+        ]
+    },
+    {
+        "id": "837cd83d24f6a840",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "previous3",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 700,
+        "wires": [
+            [
+                "0e68cb2b315cd326"
+            ]
+        ]
+    },
+    {
+        "id": "0e68cb2b315cd326",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 3 STATUS",
+        "func": "// spart = msg.topic.split(\"/\")[2]\n// slot = \" \"\n// if(spart == \"utschk1\")\n//     slot = \"SLOT 1\"\n// if(spart == \"utschk2\")\n//     slot = \"SLOT 2\"\n// if(spart == \"utschk3\")\n//     slot = \"SLOT 3\"\n// if(spart == \"utschk4\")\n//     slot = \"SLOT 4\"\n    \nvar previous = flow.get(\"previous3\");\nvar current = msg.payload;\nvar previous_val = \"\";\nvar current_val = \"\";\n\n\nif(previous >=10 && previous <=50){\n    previous_val = \"OCCUPIED\";\n}else if(previous > 50){\n    previous_val = \"AVAILABLE\";\n}else{\n    previous_val = \"ERROR\";\n}\n\nif(current >=10 && current <=50){\n    current_val = \"OCCUPIED\";\n}else if(current > 50){\n    current_val = \"AVAILABLE\";\n}else{\n    current_val = \"ERROR\";\n}\n\nif(previous_val != current_val){\n    msg.payload = {slot: \"SLOT 3\",value:current_val}\n}else{\n    msg.payload = {slot: \"SLOT 3\",value:\"IGNORED\"}\n}\n\n\nflow.set(\"previous3\",current);\n\nreturn msg;\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\n",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 700,
+        "wires": [
+            [
+                "c7079542949c6f56",
+                "d8c46074c0a1da7d"
+            ]
+        ]
+    },
+    {
+        "id": "e8a6bf729976f832",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "previous4",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 900,
+        "wires": [
+            [
+                "26ec408f7db22f88"
+            ]
+        ]
+    },
+    {
+        "id": "26ec408f7db22f88",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 4 STATUS",
+        "func": "// spart = msg.topic.split(\"/\")[2]\n// slot = \" \"\n// if(spart == \"utschk1\")\n//     slot = \"SLOT 1\"\n// if(spart == \"utschk2\")\n//     slot = \"SLOT 2\"\n// if(spart == \"utschk3\")\n//     slot = \"SLOT 3\"\n// if(spart == \"utschk4\")\n//     slot = \"SLOT 4\"\n    \nvar previous = flow.get(\"previous4\");\nvar current = msg.payload;\nvar previous_val = \"\";\nvar current_val = \"\";\n\n\nif(previous >=10 && previous <=50){\n    previous_val = \"OCCUPIED\";\n}else if(previous > 50){\n    previous_val = \"AVAILABLE\";\n}else{\n    previous_val = \"ERROR\";\n}\n\nif(current >=10 && current <=50){\n    current_val = \"OCCUPIED\";\n}else if(current > 50){\n    current_val = \"AVAILABLE\";\n}else{\n    current_val = \"ERROR\";\n}\n\nif(previous_val != current_val){\n    msg.payload = {slot: \"SLOT 4\",value:current_val}\n}else{\n    msg.payload = {slot: \"SLOT 4\",value:\"IGNORED\"}\n}\n\n\nflow.set(\"previous4\",current);\n\nreturn msg;\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\n",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 900,
+        "wires": [
+            [
+                "c7079542949c6f56",
+                "d8c46074c0a1da7d"
+            ]
+        ]
+    },
+    {
+        "id": "a5c0e7c5f4deeb06",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "Checking availability of slots",
+        "info": "",
+        "x": 220,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "5ce6c94d7ede4b62",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 2 CHECK",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT2-CHK",
+        "payload": "45",
+        "payloadType": "num",
+        "x": 160,
+        "y": 200,
+        "wires": [
+            [
+                "818dd37b85b07ef4"
+            ]
+        ]
+    },
+    {
+        "id": "818dd37b85b07ef4",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 2",
+        "topic": "sensors/utsonic/utschk2",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 380,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "31d071f9850732d4",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 3 CHECK",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT3-CHK",
+        "payload": "24",
+        "payloadType": "num",
+        "x": 160,
+        "y": 240,
+        "wires": [
+            [
+                "1dde8a614225cf1f"
+            ]
+        ]
+    },
+    {
+        "id": "1dde8a614225cf1f",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 3",
+        "topic": "sensors/utsonic/utschk3",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 400,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "8b6e41ad01b8b2d6",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 4 CHECK",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT4-CHK:4",
+        "payload": "8",
+        "payloadType": "num",
+        "x": 160,
+        "y": 280,
+        "wires": [
+            [
+                "ee304896addad8b1"
+            ]
+        ]
+    },
+    {
+        "id": "ee304896addad8b1",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 4",
+        "topic": "sensors/utsonic/utschk4",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 420,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "bd0204eac6c993f3",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 1 LEFT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT1-L",
+        "payload": "63",
+        "payloadType": "num",
+        "x": 110,
+        "y": 1240,
+        "wires": [
+            [
+                "da537c947fe17d7a"
+            ]
+        ]
+    },
+    {
+        "id": "878a7120384c4863",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 1 RIGHT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT1-R",
+        "payload": "63",
+        "payloadType": "num",
+        "x": 120,
+        "y": 1280,
+        "wires": [
+            [
+                "ab9d29b1fbd5ad2b"
+            ]
+        ]
+    },
+    {
+        "id": "9761698123a0dc63",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 2 LEFT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT2-L",
+        "payload": "30",
+        "payloadType": "num",
+        "x": 110,
+        "y": 1380,
+        "wires": [
+            [
+                "eeb0acab92069e2f"
+            ]
+        ]
+    },
+    {
+        "id": "073abbbb57bca048",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 2 RIGHT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT2-R",
+        "payload": "30",
+        "payloadType": "num",
+        "x": 120,
+        "y": 1440,
+        "wires": [
+            [
+                "14d2dae548e0c2e4"
+            ]
+        ]
+    },
+    {
+        "id": "6be89282fe9da54b",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 3 LEFT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT3-L",
+        "payload": "8",
+        "payloadType": "num",
+        "x": 110,
+        "y": 1540,
+        "wires": [
+            [
+                "aea220fdf33d3c91"
+            ]
+        ]
+    },
+    {
+        "id": "5c618e519522200a",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 3 RIGHT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT3-R",
+        "payload": "26",
+        "payloadType": "num",
+        "x": 120,
+        "y": 1600,
+        "wires": [
+            [
+                "287b80ed9b25f2c0"
+            ]
+        ]
+    },
+    {
+        "id": "cca36a5fde799d5b",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 4 LEFT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT4-L",
+        "payload": "112",
+        "payloadType": "num",
+        "x": 110,
+        "y": 1740,
+        "wires": [
+            [
+                "90a949180f42d9f3"
+            ]
+        ]
+    },
+    {
+        "id": "bc6f8b4b83b8e2eb",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT 4 RIGHT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SLOT4-R",
+        "payload": "150",
+        "payloadType": "num",
+        "x": 120,
+        "y": 1800,
+        "wires": [
+            [
+                "c3115af87ddc3beb"
+            ]
+        ]
+    },
+    {
+        "id": "da537c947fe17d7a",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts1l",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 360,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "08420bcb9da37362",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "ACCURACY OP",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1460,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "eeb0acab92069e2f",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts2l",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 360,
+        "y": 1380,
+        "wires": []
+    },
+    {
+        "id": "14d2dae548e0c2e4",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts2r",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 360,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "aea220fdf33d3c91",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts3l",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 360,
+        "y": 1540,
+        "wires": []
+    },
+    {
+        "id": "287b80ed9b25f2c0",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts3r",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 340,
+        "y": 1600,
+        "wires": []
+    },
+    {
+        "id": "90a949180f42d9f3",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts4l",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 340,
+        "y": 1740,
+        "wires": []
+    },
+    {
+        "id": "c3115af87ddc3beb",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts4r",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 340,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "1abacc7a7396b940",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts2l",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 620,
+        "y": 1380,
+        "wires": [
+            [
+                "9201e45eeca399ca"
+            ]
+        ]
+    },
+    {
+        "id": "54bd1e7837234788",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts2r",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 620,
+        "y": 1440,
+        "wires": [
+            [
+                "9201e45eeca399ca"
+            ]
+        ]
+    },
+    {
+        "id": "9201e45eeca399ca",
+        "type": "join",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 850,
+        "y": 1380,
+        "wires": [
+            [
+                "376aaaacf7827b1d"
+            ]
+        ]
+    },
+    {
+        "id": "376aaaacf7827b1d",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "ACCURACY  CHECK  SLOT 2",
+        "func": "if(msg.payload[0] <= 100)\n    if(msg.payload[0] == msg.payload[1])\n        msg.payload = {slot:\"SLOT 2\",value:\"CORRECT\"}\n    else\n        msg.payload = {slot:\"SLOT 2\",value:\"NOT CORRECT\"}\nelse \n    msg.payload = {slot:\"SLOT 2\",value:\"NO VEHICLE\"}  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 1380,
+        "wires": [
+            [
+                "fe14ea643fc016b5",
+                "08420bcb9da37362"
+            ]
+        ]
+    },
+    {
+        "id": "df169dc566f86fbb",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts3l",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 600,
+        "y": 1540,
+        "wires": [
+            [
+                "acc041d979a92a62"
+            ]
+        ]
+    },
+    {
+        "id": "642b17cb9fc68060",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts3r",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 600,
+        "y": 1600,
+        "wires": [
+            [
+                "acc041d979a92a62"
+            ]
+        ]
+    },
+    {
+        "id": "acc041d979a92a62",
+        "type": "join",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 830,
+        "y": 1500,
+        "wires": [
+            [
+                "d013916685a52f0a"
+            ]
+        ]
+    },
+    {
+        "id": "d013916685a52f0a",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "ACCURACY  CHECK  SLOT 3",
+        "func": "if(msg.payload[0] <= 100)\n    if(msg.payload[0] == msg.payload[1])\n        msg.payload = {slot:\"SLOT 3\",value:\"CORRECT\"}\n    else\n        msg.payload = {slot:\"SLOT 3\",value:\"NOT CORRECT\"}\nelse \n    msg.payload = {slot:\"SLOT 3\",value:\"NO VEHICLE\"}  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 1500,
+        "wires": [
+            [
+                "fe14ea643fc016b5",
+                "08420bcb9da37362"
+            ]
+        ]
+    },
+    {
+        "id": "6c04682d2da4a6b5",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts4l",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 600,
+        "y": 1720,
+        "wires": [
+            [
+                "5a83b885adfab116"
+            ]
+        ]
+    },
+    {
+        "id": "b7dd6bba5859d655",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts4r",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 600,
+        "y": 1800,
+        "wires": [
+            [
+                "5a83b885adfab116"
+            ]
+        ]
+    },
+    {
+        "id": "5a83b885adfab116",
+        "type": "join",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 830,
+        "y": 1700,
+        "wires": [
+            [
+                "ac8652a1789bcd03"
+            ]
+        ]
+    },
+    {
+        "id": "ac8652a1789bcd03",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "ACCURACY  CHECK  SLOT 4",
+        "func": "if(msg.payload[0] <= 100)\n    if(msg.payload[0] == msg.payload[1])\n        msg.payload = {slot:\"SLOT 4\",value:\"CORRECT\"}\n    else\n        msg.payload = {slot:\"SLOT 4\",value:\"NOT CORRECT\"}\nelse \n    msg.payload = {slot:\"SLOT 4\",value:\"NO VEHICLE\"}  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 1620,
+        "wires": [
+            [
+                "fe14ea643fc016b5",
+                "08420bcb9da37362"
+            ]
+        ]
+    },
+    {
+        "id": "fe14ea643fc016b5",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "d6c20b34041e47f0",
+        "name": "Parking Accuracy",
+        "measurement": "correctness",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "parking_slot",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1450,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "cc9f5a6d7c418fc3",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "ACCURACY  CHECK  SLOT 1",
+        "func": "if(msg.payload[0] <= 100)\n    if(msg.payload[0] == msg.payload[1])\n        msg.payload = {slot:\"SLOT 1\",value:\"CORRECT\"}\n    else\n        msg.payload = {slot:\"SLOT 1\",value:\"NOT CORRECT\"}\nelse \n    msg.payload = {slot:\"SLOT 1\",value:\"NO VEHICLE\"}  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 1260,
+        "wires": [
+            [
+                "08420bcb9da37362",
+                "fe14ea643fc016b5"
+            ]
+        ]
+    },
+    {
+        "id": "4863bde8eae370c7",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts1l",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 620,
+        "y": 1240,
+        "wires": [
+            [
+                "e29abd8e393a8f72"
+            ]
+        ]
+    },
+    {
+        "id": "93c8562dd0c55462",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts1r",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "d65284f9b1200cb0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 620,
+        "y": 1300,
+        "wires": [
+            [
+                "e29abd8e393a8f72"
+            ]
+        ]
+    },
+    {
+        "id": "e29abd8e393a8f72",
+        "type": "join",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 850,
+        "y": 1260,
+        "wires": [
+            [
+                "cc9f5a6d7c418fc3"
+            ]
+        ]
+    },
+    {
+        "id": "ab9d29b1fbd5ad2b",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "sensors/utsonic/uts1r",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d65284f9b1200cb0",
+        "x": 360,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "acc42aaa41788b18",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "Checking parking accuracy",
+        "info": "",
+        "x": 220,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "d8c46074c0a1da7d",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "SLOT AVAILABILITY",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "d65284f9b1200cb0",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "172.17.0.3",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d6c20b34041e47f0",
+        "type": "influxdb",
+        "hostname": "172.17.0.6",
+        "port": "8086",
+        "protocol": "http",
+        "database": "example",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.8-flux",
+        "url": "http://172.17.0.6:8086",
+        "rejectUnauthorized": true
+    }
+]

@@ -5,8 +5,9 @@ Although there are existing smart parking systems, still there are features to b
 
 
 Files description:
-1- testcase.csv file is used in "parking environment" to simulate the sensors.
-2- node-red flows are included seperately for each task.
-3- car sample images are used to detect license plate numbers in "entry gate" and "exit gate".
-4- grafana dashboard is exported as a single json file.
-5- SmartParkingSystem.sql file is used as a simulation for the booking system in the "entry gate" and "exit gate".
+* testcase.csv file is used in "parking environment" to simulate the sensors.
+* node-red flows are included seperately for each task.
+* car sample images are used to detect license plate numbers in "entry gate" and "exit gate".
+* grafana dashboard is exported as a single json file.
+* SmartParkingSystem.sql file is used as a simulation for the booking system in the "entry gate" and "exit gate".
+* parking_slot.autogen.00016.00 is the backup file of influxdb database (influxdb 1.8).
